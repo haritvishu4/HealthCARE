@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Care | Patient intake</title>
+    <link rel="stylesheet" href="./src/css/styles.css" />
+    <link rel="stylesheet" href="./src/css/auth.css" />
+    <link rel="stylesheet" href="./src/css/dashboard.css" />
+  </head>
+  <body class="auth-mode">
+    <div id="app">
+      <div class="auth-loading" role="status" aria-live="polite">
+        <span class="auth-brandmark" aria-hidden="true">+</span>
+        <p>Opening your Care workspace…</p>
+      </div>
+    </div>
+    <noscript>This UI needs JavaScript enabled in your browser.</noscript>
+    <!-- The intake application loads only after a verified workspace session. -->
+    <script src="./src/js/auth.js" defer></script>
+  </body>
+</html>

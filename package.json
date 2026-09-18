@@ -1,0 +1,10 @@
+{
+  "name": "care-intake-full-project",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Care Intake UI connected to a Python FastAPI backend",
+  "scripts": {
+    "dev": "node scripts/start.mjs",
+    "start": "node scripts/start.mjs"
+  }
+}

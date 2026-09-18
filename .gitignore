@@ -1,0 +1,13 @@
+.venv/
+backend/.env
+backend/.local-auth.json
+backend/.local-auth-*
+*.db
+*.db-shm
+*.db-wal
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+node_modules/
+.DS_Store
