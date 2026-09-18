@@ -33,7 +33,7 @@ Then run:
 python3 scripts/run.py
 ```
 
-Open [Care Intake](http://localhost:5173). Keep the terminal open. Ctrl+C stops both servers. Next time, only `python3 scripts/run.py` is needed. After setup, `START-MAC.command` is also available; if macOS does not allow double-clicking it, use the terminal command above.
+Open [Care Intake](http://127.0.0.1:5173/). Keep the terminal open. Use the complete URL with port `5173`; do not open bare `localhost` or port `80`, because that is not the Care proxy. Ctrl+C stops both servers. Next time, only `python3 scripts/run.py` is needed. After setup, `START-MAC.command` is also available; if macOS does not allow double-clicking it, use the terminal command above.
 
 ### Workspace login and roles
 
@@ -91,7 +91,7 @@ Select **Review** to open a prepared consultation in the physician console. You 
 
 After installing the dashboard changes, restart `python3 scripts/run.py` and reload the browser. The dashboard uses existing consultation records and requires no additional database migration.
 
-**Do not open `frontend/index.html` by double-clicking.** Use the localhost URL so the API connections work. There is no required npm install or frontend build step; this UI is plain HTML, CSS, and JavaScript. After Python setup, `npm run dev` is an optional equivalent launcher. The original stylesheet optionally loads Google Fonts and uses system fallbacks offline.
+**Do not open `frontend/index.html` by double-clicking.** Use [http://127.0.0.1:5173/](http://127.0.0.1:5173/) while the launcher is running so the API connections work. There is no required npm install or frontend build step; this UI is plain HTML, CSS, and JavaScript. After Python setup, `npm run dev` is an optional equivalent launcher. The original stylesheet optionally loads Google Fonts and uses system fallbacks offline.
 
 ## PostgreSQL / Supabase
 
@@ -160,7 +160,7 @@ The local development launcher protects a workspace with role-aware patient and 
 | `docs/DEPLOYMENT.md` | Production authentication and deployment foundation |
 | `docs/STATUS.md` | What is implemented, verified, and still deployment-specific |
 
-Swagger is at [localhost:5173/docs](http://localhost:5173/docs) through the local authenticated proxy. Direct API documentation is at [localhost:8000/docs](http://localhost:8000/docs); use its Authorize button with the generated `DEV_AUTH_TOKEN` if calling it directly.
+Swagger is at [127.0.0.1:5173/docs](http://127.0.0.1:5173/docs) through the local authenticated proxy. Direct API documentation is at [127.0.0.1:8000/docs](http://127.0.0.1:8000/docs); use its Authorize button with the generated `DEV_AUTH_TOKEN` if calling it directly.
 
 ## Tests
 
