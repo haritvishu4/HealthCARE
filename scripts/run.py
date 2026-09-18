@@ -16,6 +16,7 @@ PYTHON = ROOT / ".venv" / ("Scripts/python.exe" if os.name == "nt" else "bin/pyt
 
 def available(port):
     with socket.socket() as s:
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         try:
             s.bind(("127.0.0.1", port))
         except OSError:

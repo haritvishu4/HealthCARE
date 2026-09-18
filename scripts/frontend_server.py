@@ -144,13 +144,14 @@ def create_server(settings, auth, port=5173, upstream_port=8000):
                 return self.send_error(403, "Invalid local host")
             origin = self.headers.get("Origin")
             if len(self.headers.get_all("Origin", [])) > 1 or (
-                origin and origin != "http://" + host
+                origin and origin != "http://" + host and not (
+                    self.headers.get("Sec-Fetch-Site") == "cross-site"
+                    and self.command in ("GET", "HEAD")
+                )
             ):
                 return self.send_error(403, "Cross-origin request denied")
             if self.command not in ("GET", "HEAD") and not origin:
                 return self.send_error(403, "A same-origin request is required")
-            if self.headers.get("Sec-Fetch-Site") == "cross-site":
-                return self.send_error(403, "Cross-site request denied")
             try:
                 target = urlsplit(self.path)
             except ValueError:
@@ -158,6 +159,11 @@ def create_server(settings, auth, port=5173, upstream_port=8000):
             if not self.path.startswith("/") or target.scheme or target.netloc or target.fragment:
                 return self.send_error(400, "Invalid request path")
             path = target.path
+            if self.headers.get("Sec-Fetch-Site") == "cross-site":
+                # A README link is a legitimate cross-site top-level navigation.
+                # Keep rejecting cross-site writes and API calls to preserve CSRF protection.
+                if self.command not in ("GET", "HEAD") or path.startswith("/api/"):
+                    return self.send_error(403, "Cross-site request denied.")
             try:
                 return self.route(path)
             except AuthError as error:
@@ -226,7 +232,10 @@ def create_server(settings, auth, port=5173, upstream_port=8000):
 
         do_GET = do_HEAD = do_POST = do_PUT = do_PATCH = do_DELETE = do_OPTIONS = handle_request
 
-    return ThreadingHTTPServer(("127.0.0.1", port), Handler)
+    class ReusableThreadingHTTPServer(ThreadingHTTPServer):
+        allow_reuse_address = True
+
+    return ReusableThreadingHTTPServer(("127.0.0.1", port), Handler)
 
 
 def serve():

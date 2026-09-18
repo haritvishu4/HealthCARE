@@ -318,6 +318,17 @@ def test_foreign_host_origin_and_cross_site_requests_cannot_create_an_account(lo
     assert forwarded == []
 
 
+def test_cross_site_readme_navigation_allows_page_but_not_api(local_server, auth):
+    request, forwarded = local_server
+    assert request("GET", "/", headers={"Sec-Fetch-Site": "cross-site"})[0] == 200
+    assert request("GET", "/api/system", headers={"Sec-Fetch-Site": "cross-site"})[0] == 403
+    assert request("POST", "/auth/setup", payload=ACCOUNT, headers={
+        "Sec-Fetch-Site": "cross-site"
+    })[0] == 403
+    assert not auth.configured
+    assert forwarded == []
+
+
 def test_cross_origin_requests_cannot_use_an_authenticated_proxy(local_server, auth):
     request, forwarded = local_server
     token = auth.setup(ACCOUNT)
